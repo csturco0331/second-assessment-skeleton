@@ -17,10 +17,10 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 
 	List<TweetProjection> findRepostsById(Long id);
 	
-	List<TweetProjection> findTweetsByAuthor_Username(String username);
+	List<TweetProjection> findTweetsByAuthor_UsernameAndAuthor_DeletedFlagOrderByPostedAsc(String username, boolean b);
 	
 	List<TweetProjection> findTweetsByHashtags_Label(String label);
 
-	List<TweetProjection> findMentionedByMentions_Username(String username);
+	List<TweetProjection> findMentionedByMentions_UsernameAndMentions_DeletedFlagOrderByPostedAsc(String username, boolean b);
 
 }

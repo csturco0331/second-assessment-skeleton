@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +65,9 @@ public class Tweet {
 			inverseJoinColumns = @JoinColumn(name = "user_id"))
 	@JsonIgnore
 	private List<User> likes;
+	
+	private Boolean deletedFlag = false;
+	
 	public Tweet() {
 		
 	}
@@ -124,6 +126,54 @@ public class Tweet {
 
 	public void setRepostOf(Tweet repostOf) {
 		this.repostOf = repostOf;
+	}
+
+	public List<Tweet> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Tweet> replies) {
+		this.replies = replies;
+	}
+
+	public List<Tweet> getReposts() {
+		return reposts;
+	}
+
+	public void setReposts(List<Tweet> reposts) {
+		this.reposts = reposts;
+	}
+
+	public List<Hashtag> getHashtags() {
+		return hashtags;
+	}
+
+	public void setHashtags(List<Hashtag> hashtags) {
+		this.hashtags = hashtags;
+	}
+
+	public List<User> getMentions() {
+		return mentions;
+	}
+
+	public void setMentions(List<User> mentions) {
+		this.mentions = mentions;
+	}
+
+	public List<User> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<User> likes) {
+		this.likes = likes;
+	}
+
+	public Boolean getDeletedFlag() {
+		return deletedFlag;
+	}
+
+	public void setDeletedFlag(Boolean deletedFlag) {
+		this.deletedFlag = deletedFlag;
 	}
 	
 	

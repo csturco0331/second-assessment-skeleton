@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,14 +51,14 @@ public class User {
 	@OneToMany(mappedBy = "author")
 	private List<Tweet> tweets;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "follows",
 			joinColumns = @JoinColumn(name = "followings"),
 			inverseJoinColumns = @JoinColumn(name = "followers"))
-	private List<User> followings;
+	private List<User> followings = new LinkedList<>();
 	
-	@ManyToMany(mappedBy = "followings")
-	private List<User> followers;
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "followings")
+	private List<User> followers = new LinkedList<>();
 	
 	@ManyToMany(mappedBy = "mentions")
 	private List<Tweet> mentioned;
