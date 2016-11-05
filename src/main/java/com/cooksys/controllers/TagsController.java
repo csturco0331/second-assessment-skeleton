@@ -27,7 +27,7 @@ public class TagsController {
 	}
 	
 	@GetMapping("/{label}")
-	public List<TweetProjection> getLabel(@PathVariable String label) {
+	public List<TweetProjection> getLabel(@PathVariable String label) throws Exception {
 		return tagsService.getLabel(label);
 	}
 	

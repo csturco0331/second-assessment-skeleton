@@ -1,6 +1,7 @@
 package com.cooksys.entity;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -43,20 +44,20 @@ public class Tweet {
 	private Tweet repostOf;
 	
 	@OneToMany(mappedBy = "inReplyTo")
-	private List<Tweet> replies;
+	private List<Tweet> replies = new LinkedList<>();
 	
 	@OneToMany(mappedBy = "repostOf")
-	private List<Tweet> reposts;
+	private List<Tweet> reposts = new LinkedList<>();
 	
 	@ManyToMany(mappedBy = "tweets")
-	private List<Hashtag> hashtags;
+	private List<Hashtag> hashtags = new LinkedList<>();
 	
 	@ManyToMany
 	@JoinTable(name = "mention_tweet",
 			joinColumns = @JoinColumn(name = "tweet_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id"))
 	@JsonIgnore
-	private List<User> mentions;
+	private List<User> mentions = new LinkedList<>();
 	
 	
 	@ManyToMany
@@ -64,7 +65,7 @@ public class Tweet {
 			joinColumns = @JoinColumn(name = "tweet_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id"))
 	@JsonIgnore
-	private List<User> likes;
+	private List<User> likes = new LinkedList<>();
 	
 	private Boolean deletedFlag = false;
 	
@@ -72,11 +73,17 @@ public class Tweet {
 		
 	}
 	
-	public Tweet(User author, Timestamp posted, String content, Tweet inReplyTo, Tweet repostOf) {
+	public Tweet(User author, Timestamp posted, String content, List<Hashtag> hashtags, List<User> mentions) {
 		this.author = author;
 		this.posted = posted;
 		this.content = content;
-		this.inReplyTo = inReplyTo;
+		this.hashtags = hashtags;
+		this.mentions = mentions;
+	}
+
+	public Tweet(User author, Timestamp posted, Tweet repostOf) {
+		this.author = author;
+		this.posted = posted;
 		this.repostOf = repostOf;
 	}
 

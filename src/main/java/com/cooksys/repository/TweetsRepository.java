@@ -11,16 +11,20 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 
 	List<TweetProjection> findAllProjectedBy();
 
-	TweetProjection findById(Long id);
+	TweetProjection findByIdAndDeletedFlag(Long id, boolean b);
 
-	List<TweetProjection> findRepliesById(Long id);
+	List<TweetProjection> findRepliesByIdAndDeletedFlagAndReplies_DeletedFlag(Long id, boolean b, boolean c);
 
-	List<TweetProjection> findRepostsById(Long id);
+	List<TweetProjection> findRepostsByIdAndDeletedFlagAndReposts_DeletedFlag(Long id, boolean b, boolean c);
 	
 	List<TweetProjection> findTweetsByAuthor_UsernameAndAuthor_DeletedFlagOrderByPostedAsc(String username, boolean b);
 	
-	List<TweetProjection> findTweetsByHashtags_Label(String label);
+	List<TweetProjection> findTweetsByHashtags_LabelAndDeletedFlagOrderByPostedAsc(String label, boolean b);
 
 	List<TweetProjection> findMentionedByMentions_UsernameAndMentions_DeletedFlagOrderByPostedAsc(String username, boolean b);
+
+	List<TweetProjection> findByDeletedFlagOrderByPostedAsc(boolean b);
+
+	Tweet findFirstByIdAndDeletedFlag(Long id, boolean b);
 
 }

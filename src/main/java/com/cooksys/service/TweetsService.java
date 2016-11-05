@@ -2,6 +2,8 @@ package com.cooksys.service;
 
 import java.util.List;
 
+import com.cooksys.entity.Credentials;
+import com.cooksys.entity.TweetPost;
 import com.cooksys.projections.ContextProjection;
 import com.cooksys.projections.HashtagProjection;
 import com.cooksys.projections.TweetProjection;
@@ -11,26 +13,26 @@ public interface TweetsService {
 
 	List<TweetProjection> getTweets();
 
-	TweetProjection getTweet(Long id);
+	TweetProjection getTweet(Long id) throws Exception;
 
-	List<HashtagProjection> getTags(Long id);
+	List<HashtagProjection> getTags(Long id) throws Exception;
 
-	List<UserProjection> getLikes(Long id);
+	List<UserProjection> getLikes(Long id) throws Exception;
 
-//	ContextProjection getContext(Long id);
+	ContextProjection getContext(Long id) throws Exception;
 
-	List<TweetProjection> getReplies(Long id);
+	List<TweetProjection> getReplies(Long id) throws Exception;
 
-	List<TweetProjection> getReposts(Long id);
+	List<TweetProjection> getReposts(Long id) throws Exception;
 
-	List<UserProjection> getMentions(Long id);
-//
-//	TweetProjection postTweet(String content, CredentialsProjection credentials);
-//
-//	TweetProjection postReply(Long id, String content, CredentialsProjection credentials);
-//
-//	TweetProjection postRepost(Long id, CredentialsProjection credentials);
-//
-//	TweetProjection deleteTweet(Long id);
+	List<UserProjection> getMentions(Long id) throws Exception;
+
+	TweetProjection postTweet(TweetPost post) throws Exception;
+
+	TweetProjection postReply(Long id, TweetPost post) throws Exception;
+
+	TweetProjection postRepost(Long id, Credentials credentials) throws Exception;
+
+	TweetProjection deleteTweet(Long id, Credentials credentials) throws Exception;
 
 }

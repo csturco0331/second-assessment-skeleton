@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserProjection deleteUser(String username, Credentials credentials) throws Exception {
-		User user = userRepo.findFirstByUsername(credentials.getUsername());
+		User user = userRepo.findFirstByUsername(username);
 		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or not found");
 		user.setDeletedFlag(true);

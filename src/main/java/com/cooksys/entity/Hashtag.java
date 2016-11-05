@@ -38,6 +38,16 @@ public class Hashtag {
 			inverseJoinColumns = @JoinColumn(name = "tweet_id"))
 	private List<Tweet> tweets;
 
+	public Hashtag() {
+		
+	}
+	
+	public Hashtag(String label, Timestamp firstUsed) {
+		this.label = label;
+		this.firstUsed = firstUsed;
+		this.lastUsed = firstUsed;
+	}
+
 	public Long getId() {
 		return id;
 	}

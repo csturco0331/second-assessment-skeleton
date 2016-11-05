@@ -17,9 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	//consider replacing all instances with findallprojectedby
 	List<UserProjection> findAllProjectedBy();
 	
-	List<UserProjection> findLikesByLiked_Id(Long id);
+	List<UserProjection> findLikesByLiked_IdAndDeletedFlag(Long id, boolean b);
 
-	List<UserProjection> findMentionsByMentioned_Id(Long id);
+	List<UserProjection> findMentionsByMentioned_IdAndDeletedFlag(Long id, boolean b);
 
 	List<UserProjection> findFollowersByUsernameAndDeletedFlag(String username, boolean b);
 

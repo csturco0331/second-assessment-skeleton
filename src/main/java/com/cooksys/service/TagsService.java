@@ -9,6 +9,6 @@ public interface TagsService {
 
 	List<HashtagProjection> getHashtags();
 
-	List<TweetProjection> getLabel(String label);
+	List<TweetProjection> getLabel(String label) throws Exception;
 
 }
