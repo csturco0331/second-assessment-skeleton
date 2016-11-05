@@ -16,6 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.cooksys.projections.TweetProjection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -49,7 +53,8 @@ public class Tweet {
 	@OneToMany(mappedBy = "repostOf")
 	private List<Tweet> reposts = new LinkedList<>();
 	
-	@ManyToMany(mappedBy = "tweets")
+	@ManyToMany(mappedBy = "hashtagTweets")
+	@Cascade({CascadeType.ALL})
 	private List<Hashtag> hashtags = new LinkedList<>();
 	
 	@ManyToMany
@@ -183,6 +188,11 @@ public class Tweet {
 		this.deletedFlag = deletedFlag;
 	}
 	
+	public TweetProjection retrieveInReplyTo() {
+		return (TweetProjection) inReplyTo;
+	}
 	
-	
+	public TweetProjection retrieveRepostOf() {
+		return (TweetProjection) repostOf;
+	}
 }

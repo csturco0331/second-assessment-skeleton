@@ -11,12 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "hashtag")
-@SecondaryTable(name = "hashtag_tweet")
 public class Hashtag {
 	
 	@Id
@@ -34,9 +32,9 @@ public class Hashtag {
 	
 	@ManyToMany
 	@JoinTable(name = "hashtag_tweet",
-			joinColumns = @JoinColumn(name = "hashtag_id"),
-			inverseJoinColumns = @JoinColumn(name = "tweet_id"))
-	private List<Tweet> tweets;
+			joinColumns = @JoinColumn(name = "hashtags"),
+			inverseJoinColumns = @JoinColumn(name = "tweets"))
+	private List<Tweet> hashtagTweets;
 
 	public Hashtag() {
 		
@@ -80,12 +78,12 @@ public class Hashtag {
 		this.lastUsed = lastUsed;
 	}
 
-	public List<Tweet> getTweets() {
-		return tweets;
+	public List<Tweet> getHashtagTweets() {
+		return hashtagTweets;
 	}
 
-	public void setTweets(List<Tweet> tweets) {
-		this.tweets = tweets;
+	public void setHashtagTweets(List<Tweet> hashtagTweets) {
+		this.hashtagTweets = hashtagTweets;
 	}
 	
 }

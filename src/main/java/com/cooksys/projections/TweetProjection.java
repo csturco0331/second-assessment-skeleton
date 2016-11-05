@@ -2,6 +2,8 @@ package com.cooksys.projections;
 
 import java.sql.Timestamp;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public interface TweetProjection {
 
 	Long getId();
@@ -12,8 +14,10 @@ public interface TweetProjection {
 	
 	String getContent();
 	
+	@Value("#{target.retrieveInReplyTo()}")
 	TweetProjection getInReplyTo();
 	
+	@Value("#{target.retrieveRepostOf()}")
 	TweetProjection getRepostOf();
 	
 }

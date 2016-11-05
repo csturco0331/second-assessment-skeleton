@@ -53,7 +53,7 @@ public class TweetsServiceImpl implements TweetsService {
 	@Override
 	public List<HashtagProjection> getTags(Long id) throws Exception {
 		if(tweetsRepo.findByIdAndDeletedFlag(id, false) == null) throw new Exception("No Tweet found");
-		return hashtagRepo.findHashtagsByTweets_IdAndTweets_DeletedFlag(id, false);
+		return hashtagRepo.findHashtagsByHashtagTweets_IdAndHashtagTweets_DeletedFlag(id, false);
 	}
 
 	@Override
@@ -93,7 +93,8 @@ public class TweetsServiceImpl implements TweetsService {
 			throw new Exception("Credentials do not match or User not found");
 		Tweet tweet = new Tweet(user, new Timestamp(System.currentTimeMillis()), post.getContent(), parseTags(post.getContent()), parseMentions(post.getContent()));
 		Tweet result = tweetsRepo.saveAndFlush(tweet);
-		return tweetsRepo.findByIdAndDeletedFlag(result.getId(), false);
+		TweetProjection temp = tweetsRepo.findByIdAndDeletedFlag(result.getId(), false);
+		return temp;
 	}
 	
 	@Transactional
@@ -102,7 +103,7 @@ public class TweetsServiceImpl implements TweetsService {
 		Matcher m = Pattern.compile("(\\s|\\A)@(\\w+)").matcher(content);
 		while(m.find()) {
 			String username = m.group();
-			users.add(userRepo.findFirstByUsername(username.substring(1)));
+			users.add(userRepo.findFirstByUsername(username.substring(2)));
 		}
 		users.removeAll(Collections.singleton(null));
 		return users;
@@ -113,10 +114,12 @@ public class TweetsServiceImpl implements TweetsService {
 		List<Hashtag> hashtags = new ArrayList<>();
 		Matcher m = Pattern.compile("(\\s|\\A)#(\\w+)").matcher(content);
 		while(m.find()) {
-			String label = m.group().substring(1);
+			String label = m.group().substring(2);
 			Hashtag hashtag = hashtagRepo.findFirstByLabel(label);
 			if(hashtag == null) hashtag = new Hashtag(label, new Timestamp(System.currentTimeMillis()));
 			else hashtag.setLastUsed(new Timestamp(System.currentTimeMillis()));
+			hashtagRepo.saveAndFlush(hashtag);
+			hashtag = hashtagRepo.findFirstByLabel(label);
 			hashtags.add(hashtag);
 		}
 		return hashtags;
