@@ -55,9 +55,9 @@ public class User {
 	@JoinTable(name = "follows",
 			joinColumns = @JoinColumn(name = "followings"),
 			inverseJoinColumns = @JoinColumn(name = "followers"))
-	private List<User> followings = new LinkedList<>();
+	private List<User> whoIAmFollowing = new LinkedList<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "followings")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "whoIAmFollowing")
 	private List<User> followers = new LinkedList<>();
 	
 	@ManyToMany(mappedBy = "mentions")
@@ -76,7 +76,7 @@ public class User {
 		this.deletedFlag = deletedFlag;
 		this.profile = profile;
 		this.followers = followers;
-		this.followings = followings;
+		this.whoIAmFollowing = followings;
 		this.credentials = credentials;
 	}
 
@@ -86,7 +86,7 @@ public class User {
 		this.deletedFlag = false;
 		this.profile = new Profile(profile);
 		this.followers = new LinkedList<>();
-		this.followings = new LinkedList<>();
+		this.whoIAmFollowing = new LinkedList<>();
 		this.credentials = new Credentials(credentials);
 	}
 
@@ -162,12 +162,12 @@ public class User {
 		this.tweets = tweets;
 	}
 
-	public List<User> getFollowings() {
-		return followings;
+	public List<User> getWhoIAmFollowing() {
+		return whoIAmFollowing;
 	}
 
-	public void setFollowings(List<User> followings) {
-		this.followings = followings;
+	public void setWhoIAmFollowing(List<User> followings) {
+		this.whoIAmFollowing = followings;
 	}
 
 	public List<User> getFollowers() {

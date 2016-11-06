@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -30,10 +28,7 @@ public class Hashtag {
 	@Column(nullable = false)
 	private Timestamp lastUsed;
 	
-	@ManyToMany
-	@JoinTable(name = "hashtag_tweet",
-			joinColumns = @JoinColumn(name = "hashtags"),
-			inverseJoinColumns = @JoinColumn(name = "tweets"))
+	@ManyToMany(mappedBy = "hashtags")
 	private List<Tweet> hashtagTweets;
 
 	public Hashtag() {
@@ -41,7 +36,7 @@ public class Hashtag {
 	}
 	
 	public Hashtag(String label, Timestamp firstUsed) {
-		this.label = label;
+		this.label = label.toLowerCase();
 		this.firstUsed = firstUsed;
 		this.lastUsed = firstUsed;
 	}
@@ -59,7 +54,7 @@ public class Hashtag {
 	}
 
 	public void setLabel(String label) {
-		this.label = label;
+		this.label = label.toLowerCase();
 	}
 
 	public Timestamp getFirstUsed() {

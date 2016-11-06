@@ -58,13 +58,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserProjection> getFollowers(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return userRepo.findFollowersByUsernameAndDeletedFlag(username, false);
+		return userRepo.findFollowersByWhoIAmFollowing_UsernameAndDeletedFlag(username, false);
 	}
 
 	@Override
 	public List<UserProjection> getFollowing(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return userRepo.findFollowingByUsernameAndDeletedFlag(username, false);
+		return userRepo.findWhoIAmFollowingByFollowers_UsernameAndDeletedFlag(username, false);
 	}
 
 	@Override
@@ -100,30 +100,30 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void postFollow(String username, Credentials credentials) throws Exception {
-		User follower = userRepo.findFirstByUsername(credentials.getUsername());
-		User following = userRepo.findFirstByUsername(username);
+		User follower = userRepo.findFirstByUsernameAndDeletedFlag(credentials.getUsername(), false);
+		User following = userRepo.findFirstByUsernameAndDeletedFlag(username, false);
 		if(follower == null || follower.getDeletedFlag() || !follower.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or not found");
 		if(following == null || following.getDeletedFlag())
 			throw new Exception("User to follow does not exist");
-		if(follower.getFollowings().contains(following))
+		if(follower.getWhoIAmFollowing().contains(following))
 			throw new Exception("Already following user");
-		follower.getFollowings().add(following);
+		follower.getWhoIAmFollowing().add(following);
 		userRepo.saveAndFlush(follower);
 	}
 
 	@Override
 	@Transactional
 	public void postUnfollow(String username, Credentials credentials) throws Exception {
-		User follower = userRepo.findFirstByUsername(credentials.getUsername());
-		User following = userRepo.findFirstByUsername(username);
+		User follower = userRepo.findFirstByUsernameAndDeletedFlag(credentials.getUsername(), false);
+		User following = userRepo.findFirstByUsernameAndDeletedFlag(username, false);
 		if(follower == null || follower.getDeletedFlag() || !follower.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or not found");
 		if(following == null || following.getDeletedFlag())
 			throw new Exception("User to unfollow does not exist");
-		if(!follower.getFollowings().contains(following))
+		if(!follower.getWhoIAmFollowing().contains(following))
 			throw new Exception("Not following this user in the first place");
-		follower.getFollowings().remove(following);
+		follower.getWhoIAmFollowing().remove(following);
 		userRepo.saveAndFlush(follower);
 		System.out.println("Added follower");
 	}
@@ -133,13 +133,15 @@ public class UserServiceImpl implements UserService {
 	public UserProjection patchUser(String username, User user) throws Exception {
 		if(user.getCredentials().getUsername() == null || user.getCredentials().getPassword() == null || user.getProfile().getEmail() == null)
 			throw new Exception("Required field was null");
-		user.setUsername(user.getCredentials().getUsername());
-		User search = userRepo.findFirstByUsername(user.getUsername());
-		System.out.println(search.getUsername());
+		if(!username.equals(user.getCredentials().getUsername())) throw new Exception("Usernames do not match");
+		user.setUsername(username);
+		User search = userRepo.findFirstByUsernameAndDeletedFlag(username, false);
 		if(search == null || search.getDeletedFlag()) {
 			throw new Exception("Username does not exist");
 		} if(search.getCredentials().getPassword().equals(user.getCredentials().getPassword())) {
 			user.setId(search.getId());
+			user.getCredentials().setId(search.getCredentials().getId());
+			user.getProfile().setId(search.getProfile().getId());
 			User temp = userRepo.saveAndFlush(user);
 			return userRepo.findByUsername(temp.getUsername());
 		}
@@ -149,7 +151,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserProjection deleteUser(String username, Credentials credentials) throws Exception {
-		User user = userRepo.findFirstByUsername(username);
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(username, false);
+		if(!username.equals(credentials.getUsername())) throw new Exception("Usernames do not match");
 		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or not found");
 		user.setDeletedFlag(true);

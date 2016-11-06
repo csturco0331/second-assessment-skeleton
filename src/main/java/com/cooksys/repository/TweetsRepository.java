@@ -15,7 +15,7 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 
 	List<TweetProjection> findRepliesByIdAndDeletedFlagAndReplies_DeletedFlag(Long id, boolean b, boolean c);
 
-	List<TweetProjection> findRepostsByIdAndDeletedFlagAndReposts_DeletedFlag(Long id, boolean b, boolean c);
+	List<TweetProjection> findByRepostOf_IdAndDeletedFlag(Long id, boolean b);
 	
 	List<TweetProjection> findTweetsByAuthor_UsernameAndAuthor_DeletedFlagOrderByPostedAsc(String username, boolean b);
 	
@@ -28,5 +28,7 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 	Tweet findFirstByIdAndDeletedFlag(Long id, boolean b);
 
 	TweetProjection findById(Long id);
+
+	List<TweetProjection> findByInReplyTo_IdAndDeletedFlag(Long id, boolean b);
 
 }

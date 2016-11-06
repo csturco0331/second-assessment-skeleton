@@ -9,12 +9,12 @@ import com.cooksys.projections.HashtagProjection;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
-	HashtagProjection findByLabel(String label);
+	HashtagProjection findByLabelIgnoreCase(String label);
 
 	List<HashtagProjection> findAllProjectedBy();
 	
 	List<HashtagProjection> findHashtagsByHashtagTweets_IdAndHashtagTweets_DeletedFlag(Long id, boolean b);
 
-	Hashtag findFirstByLabel(String label);
+	Hashtag findFirstByLabelIgnoreCase(String label);
 	
 }

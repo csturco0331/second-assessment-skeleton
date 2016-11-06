@@ -73,6 +73,11 @@ public class TweetsController {
 		return tweetsService.postTweet(post);
 	}
 	
+	@PostMapping("/{id}/like")
+	public void postLike(@PathVariable Long id, @RequestBody Credentials credentials) throws Exception {
+		tweetsService.postLike(id, credentials);
+	}
+	
 	@PostMapping("/{id}/reply")
 	public TweetProjection postReply(@PathVariable Long id, @RequestBody TweetPost post) throws Exception {
 		return tweetsService.postReply(id, post);

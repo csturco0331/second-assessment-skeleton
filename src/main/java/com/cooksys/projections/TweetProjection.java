@@ -14,10 +14,10 @@ public interface TweetProjection {
 	
 	String getContent();
 	
-	@Value("#{target.retrieveInReplyTo()}")
-	TweetProjection getInReplyTo();
+	@Value("#{target.getInReplyTo()}")
+	TweetAssist getInReplyTo();
 	
-	@Value("#{target.retrieveRepostOf()}")
-	TweetProjection getRepostOf();
+	@Value("#{target.getRepostOf()}")
+	TweetAssist getRepostOf();
 	
 }

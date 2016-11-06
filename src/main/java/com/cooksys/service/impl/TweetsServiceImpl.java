@@ -70,13 +70,13 @@ public class TweetsServiceImpl implements TweetsService {
 	@Override
 	public List<TweetProjection> getReplies(Long id) throws Exception {
 		if(tweetsRepo.findByIdAndDeletedFlag(id, false) == null) throw new Exception("No Tweet found");
-		return tweetsRepo.findRepliesByIdAndDeletedFlagAndReplies_DeletedFlag(id, false, false);
+		return tweetsRepo.findByInReplyTo_IdAndDeletedFlag(id, false);
 	}
 
 	@Override
 	public List<TweetProjection> getReposts(Long id) throws Exception {
 		if(tweetsRepo.findByIdAndDeletedFlag(id, false) == null) throw new Exception("No Tweet found");
-		return tweetsRepo.findRepostsByIdAndDeletedFlagAndReposts_DeletedFlag(id, false, false);
+		return tweetsRepo.findByRepostOf_IdAndDeletedFlag(id, false);
 	}
 
 	@Override
@@ -88,13 +88,12 @@ public class TweetsServiceImpl implements TweetsService {
 	@Override
 	@Transactional
 	public TweetProjection postTweet(TweetPost post) throws Exception {
-		User user = userRepo.findFirstByUsername(post.getCredentials().getUsername());
-		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(post.getCredentials().getPassword()))
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(post.getCredentials().getUsername(), false);
+		if(user == null || !user.getCredentials().getPassword().equals(post.getCredentials().getPassword()))
 			throw new Exception("Credentials do not match or User not found");
 		Tweet tweet = new Tweet(user, new Timestamp(System.currentTimeMillis()), post.getContent(), parseTags(post.getContent()), parseMentions(post.getContent()));
 		Tweet result = tweetsRepo.saveAndFlush(tweet);
-		TweetProjection temp = tweetsRepo.findByIdAndDeletedFlag(result.getId(), false);
-		return temp;
+		return tweetsRepo.findByIdAndDeletedFlag(result.getId(), false);
 	}
 	
 	@Transactional
@@ -103,7 +102,7 @@ public class TweetsServiceImpl implements TweetsService {
 		Matcher m = Pattern.compile("(\\s|\\A)@(\\w+)").matcher(content);
 		while(m.find()) {
 			String username = m.group();
-			users.add(userRepo.findFirstByUsername(username.substring(2)));
+			users.add(userRepo.findFirstByUsernameAndDeletedFlag(username.substring(2), false));
 		}
 		users.removeAll(Collections.singleton(null));
 		return users;
@@ -111,25 +110,39 @@ public class TweetsServiceImpl implements TweetsService {
 
 	@Transactional
 	private List<Hashtag> parseTags(String content) throws Exception {
+		Timestamp creation = new Timestamp(System.currentTimeMillis());
 		List<Hashtag> hashtags = new ArrayList<>();
 		Matcher m = Pattern.compile("(\\s|\\A)#(\\w+)").matcher(content);
 		while(m.find()) {
 			String label = m.group().substring(2);
-			Hashtag hashtag = hashtagRepo.findFirstByLabel(label);
-			if(hashtag == null) hashtag = new Hashtag(label, new Timestamp(System.currentTimeMillis()));
-			else hashtag.setLastUsed(new Timestamp(System.currentTimeMillis()));
+			Hashtag hashtag = hashtagRepo.findFirstByLabelIgnoreCase(label);
+			if(hashtag == null) hashtag = new Hashtag(label, creation);
+			else hashtag.setLastUsed(creation);
 			hashtagRepo.saveAndFlush(hashtag);
-			hashtag = hashtagRepo.findFirstByLabel(label);
+			hashtag = hashtagRepo.findFirstByLabelIgnoreCase(label);
 			hashtags.add(hashtag);
 		}
 		return hashtags;
+	}
+	
+	@Override
+	@Transactional
+	public void postLike(Long id, Credentials credentials) throws Exception {
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(credentials.getUsername(), false);
+		if(user == null || !user.getCredentials().getPassword().equals(credentials.getPassword())) 
+			throw new Exception("Credentials do not match a User");
+		Tweet tweet = tweetsRepo.findFirstByIdAndDeletedFlag(id, false);
+		if(tweet == null) throw new Exception("No Tweet found");
+		if(tweet.getLikes().contains(user)) return;
+		tweet.getLikes().add(user);
+		tweetsRepo.saveAndFlush(tweet);
 	}
 
 	@Override
 	@Transactional
 	public TweetProjection postReply(Long id, TweetPost post) throws Exception {
-		User user = userRepo.findFirstByUsername(post.getCredentials().getUsername());
-		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(post.getCredentials().getPassword()))
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(post.getCredentials().getUsername(), false);
+		if(user == null || !user.getCredentials().getPassword().equals(post.getCredentials().getPassword()))
 			throw new Exception("Credentials do not match or User not found");
 		Tweet retrieved = tweetsRepo.findFirstByIdAndDeletedFlag(id, false);
 		if (retrieved == null) throw new Exception("No Tweet found");
@@ -142,8 +155,8 @@ public class TweetsServiceImpl implements TweetsService {
 	@Override
 	@Transactional
 	public TweetProjection postRepost(Long id, Credentials credentials) throws Exception {
-		User user = userRepo.findFirstByUsername(credentials.getUsername());
-		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(credentials.getPassword()))
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(credentials.getUsername(), false);
+		if(user == null || !user.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or User not found");
 		Tweet retrieved = tweetsRepo.findFirstByIdAndDeletedFlag(id, false);
 		if (retrieved == null) throw new Exception("No Tweet found");
@@ -155,11 +168,13 @@ public class TweetsServiceImpl implements TweetsService {
 	@Override
 	@Transactional
 	public TweetProjection deleteTweet(Long id, Credentials credentials) throws Exception {
-		User user = userRepo.findFirstByUsername(credentials.getUsername());
-		if(user == null || user.getDeletedFlag() || !user.getCredentials().getPassword().equals(credentials.getPassword()))
+		User user = userRepo.findFirstByUsernameAndDeletedFlag(credentials.getUsername(), false);
+		if(user == null || !user.getCredentials().getPassword().equals(credentials.getPassword()))
 			throw new Exception("Credentials do not match or not found");
 		Tweet tweet = tweetsRepo.findFirstByIdAndDeletedFlag(id, false);
 		if(tweet == null) throw new Exception("No Tweet found");
+		if(!tweet.getAuthor().getUsername().equals(credentials.getUsername()) || !tweet.getAuthor().getCredentials().getPassword().equals(credentials.getPassword()))
+			throw new Exception("Not the Author of this tweet");
 		tweet.setDeletedFlag(true);
 		tweet = tweetsRepo.saveAndFlush(tweet);
 		return tweetsRepo.findByIdAndDeletedFlag(tweet.getId(), true);

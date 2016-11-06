@@ -19,17 +19,17 @@ public class ValidateServiceImpl implements ValidateService {
 	
 	@Override
 	public Boolean hashtagExists(String label) {
-		return hashtagRepo.findByLabel(label) != null ? true : false;
+		return hashtagRepo.findByLabelIgnoreCase(label) != null ? true : false;
 	}
 
 	@Override
 	public Boolean usernameExists(String username) {
-		return userRepo.findDeletedFlagByUsername(username) == false ? true : false;
+		return userRepo.findByUsernameAndDeletedFlag(username, false) != null ? true : false;
 	}
 
 	@Override
 	public Boolean usernameAvailable(String username) {
-		return userRepo.findDeletedFlagByUsername(username) == null ? true : false;
+		return userRepo.findByUsername(username) == null ? true : false;
 	}
 
 }

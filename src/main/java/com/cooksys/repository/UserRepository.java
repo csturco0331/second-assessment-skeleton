@@ -21,16 +21,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	List<UserProjection> findMentionsByMentioned_IdAndDeletedFlag(Long id, boolean b);
 
-	List<UserProjection> findFollowersByUsernameAndDeletedFlag(String username, boolean b);
+	List<UserProjection> findFollowersByWhoIAmFollowing_UsernameAndDeletedFlag(String username, boolean b);
 
-	List<UserProjection> findFollowingByUsernameAndDeletedFlag(String username, boolean b);
+	List<UserProjection> findWhoIAmFollowingByFollowers_UsernameAndDeletedFlag(String username, boolean b);
 
 	UserProjection findByUsernameAndCredentials_Password(String username, String password);
 
-	User findFirstByUsername(String username);
+	User findFirstByUsernameAndDeletedFlag(String username, boolean b);
 
 	UserProjection findByUsernameAndDeletedFlag(String username, boolean b);
 
 	List<UserProjection> findAllByDeletedFlag(boolean b);
+
+	User findFirstByUsername(String username);
 	
 }

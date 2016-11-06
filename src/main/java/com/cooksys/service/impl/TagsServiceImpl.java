@@ -28,7 +28,7 @@ public class TagsServiceImpl implements TagsService {
 
 	@Override
 	public List<TweetProjection> getLabel(String label) throws Exception {
-		if(hashtagRepo.findByLabel(label) == null) throw new Exception("No Hashtag found");
+		if(hashtagRepo.findByLabelIgnoreCase(label) == null) throw new Exception("No Hashtag found");
 		return tweetsRepo.findTweetsByHashtags_LabelAndDeletedFlagOrderByPostedAsc(label, false);
 	}
 

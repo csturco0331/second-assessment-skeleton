@@ -35,4 +35,6 @@ public interface TweetsService {
 
 	TweetProjection deleteTweet(Long id, Credentials credentials) throws Exception;
 
+	void postLike(Long id, Credentials credentials) throws Exception;
+
 }

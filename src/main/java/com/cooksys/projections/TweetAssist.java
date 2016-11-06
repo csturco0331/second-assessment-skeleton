@@ -2,7 +2,7 @@ package com.cooksys.projections;
 
 import java.sql.Timestamp;
 
-public interface TweetProjectionAssist {
+public interface TweetAssist {
 
 	Long getId();
 	
