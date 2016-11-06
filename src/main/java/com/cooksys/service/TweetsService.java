@@ -2,9 +2,9 @@ package com.cooksys.service;
 
 import java.util.List;
 
+import com.cooksys.entity.Context;
 import com.cooksys.entity.Credentials;
 import com.cooksys.entity.TweetPost;
-import com.cooksys.projections.ContextProjection;
 import com.cooksys.projections.HashtagProjection;
 import com.cooksys.projections.TweetProjection;
 import com.cooksys.projections.UserProjection;
@@ -19,7 +19,7 @@ public interface TweetsService {
 
 	List<UserProjection> getLikes(Long id) throws Exception;
 
-	ContextProjection getContext(Long id) throws Exception;
+	Context getContext(Long id) throws Exception;
 
 	List<TweetProjection> getReplies(Long id) throws Exception;
 

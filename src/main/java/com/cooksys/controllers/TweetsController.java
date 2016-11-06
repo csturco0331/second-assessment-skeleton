@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cooksys.entity.Context;
 import com.cooksys.entity.Credentials;
 import com.cooksys.entity.TweetPost;
-import com.cooksys.projections.ContextProjection;
 import com.cooksys.projections.HashtagProjection;
 import com.cooksys.projections.TweetProjection;
 import com.cooksys.projections.UserProjection;
@@ -49,7 +49,7 @@ public class TweetsController {
 	}
 	
 	@GetMapping("/{id}/context")
-	public ContextProjection getContext(@PathVariable Long id) throws Exception {
+	public Context getContext(@PathVariable Long id) throws Exception {
 		return tweetsService.getContext(id);
 	}
 	

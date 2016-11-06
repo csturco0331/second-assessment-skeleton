@@ -31,7 +31,7 @@ public interface TweetProjection {
 
 			@Override
 			public int compare(TweetProjection one, TweetProjection two) {
-				return Long.compare(one.getPosted().getTime(), two.getPosted().getTime());
+				return Long.compare(two.getPosted().getTime(), one.getPosted().getTime());
 			}
 		};
 		return comp;

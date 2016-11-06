@@ -1,7 +1,6 @@
 package com.cooksys.service.impl;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -54,13 +53,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<TweetProjection> getTweets(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return tweetsRepo.findTweetsByAuthor_UsernameAndAuthor_DeletedFlagOrderByPostedAsc(username, false);
+		return tweetsRepo.findTweetsByAuthor_UsernameAndDeletedFlagOrderByPostedAsc(username, false);
 	}
 
 	@Override
 	public List<TweetProjection> getMentions(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return tweetsRepo.findMentionedByMentions_UsernameAndMentions_DeletedFlagOrderByPostedAsc(username, false);
+		return tweetsRepo.findMentionedByMentions_UsernameAndDeletedFlagOrderByPostedAsc(username, false);
 	}
 
 	@Override
@@ -94,17 +93,6 @@ public class UserServiceImpl implements UserService {
 		throw new Exception("Username already Exists");
 	}
 
-//	@Transactional
-//	private UserProjection recoverUser(User user) {
-//		user.setDeletedFlag(false);
-//		List<Tweet> tweets = user.getTweets();
-//		for(Tweet tweet : tweets) {
-//			tweet.setDeletedFlag(false);
-//		}
-//		User temp = userRepo.saveAndFlush(user);
-//		return userRepo.findByUsername(temp.getUsername());
-//	}
-
 	@Override
 	@Transactional
 	public void postFollow(String username, Credentials credentials) throws Exception {
@@ -133,7 +121,6 @@ public class UserServiceImpl implements UserService {
 			throw new Exception("Not following this user in the first place");
 		follower.getWhoIAmFollowing().remove(following);
 		userRepo.saveAndFlush(follower);
-		System.out.println("Added follower");
 	}
 
 	@Override
