@@ -41,7 +41,7 @@ public class TweetsServiceImpl implements TweetsService {
 
 	@Override
 	public List<TweetProjection> getTweets() {
-		return tweetsRepo.findByDeletedFlagOrderByPostedAsc(false);
+		return tweetsRepo.findByDeletedFlagOrderByPostedDesc(false);
 	}
 
 	@Override

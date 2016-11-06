@@ -30,7 +30,7 @@ public class Tweet {
 	@JoinColumn
 	private User author;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private Timestamp posted;
 	
 	private String content;

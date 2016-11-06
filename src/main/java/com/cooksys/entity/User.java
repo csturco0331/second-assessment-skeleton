@@ -106,6 +106,7 @@ public class User {
 		this.username = username;
 	}
 
+	@Column(updatable = false)
 	public Timestamp getJoined() {
 		return joined;
 	}
