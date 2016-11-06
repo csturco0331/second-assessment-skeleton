@@ -1,6 +1,7 @@
 package com.cooksys.projections;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -19,5 +20,21 @@ public interface TweetProjection {
 	
 	@Value("#{target.getRepostOf()}")
 	TweetAssist getRepostOf();
+	
+//	@Override
+//	default public int compareTo(TweetProjection other) {
+//	    return Long.compare(this.getPosted().getTime(), other.getPosted().getTime());
+//	}
+	
+	public static Comparator<TweetProjection> sortByPosted() {
+		Comparator<TweetProjection> comp = new Comparator<TweetProjection>() {
+
+			@Override
+			public int compare(TweetProjection one, TweetProjection two) {
+				return Long.compare(one.getPosted().getTime(), two.getPosted().getTime());
+			}
+		};
+		return comp;
+	}
 	
 }

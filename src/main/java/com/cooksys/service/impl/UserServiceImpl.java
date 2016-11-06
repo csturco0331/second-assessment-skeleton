@@ -1,6 +1,7 @@
 package com.cooksys.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -40,7 +41,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<TweetProjection> getFeed(String username) throws Exception {
-		throw new Exception("Not implemented");
+		List<TweetProjection> tweets = getTweets(username);
+		List<User> whoIAmFollowing = userRepo.findAllWhoIAmFollowingByFollowers_UsernameAndDeletedFlag(username, false);
+		for(User user : whoIAmFollowing) {
+			tweets.addAll(getTweets(user.getUsername()));
+		}
+		tweets.sort(TweetProjection.sortByPosted());
+		return tweets;
+		
 	}
 
 	@Override

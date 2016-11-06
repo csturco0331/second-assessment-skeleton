@@ -31,4 +31,6 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 
 	List<TweetProjection> findByInReplyTo_IdAndDeletedFlag(Long id, boolean b);
 
+	List<TweetProjection> findAuthor_WhoIAmFollowing_TweetsByAuthor_Username(String username);
+
 }
