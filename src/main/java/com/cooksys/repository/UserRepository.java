@@ -36,5 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findFirstByUsername(String username);
 
 	List<User> findAllWhoIAmFollowingByFollowers_UsernameAndDeletedFlag(String username, boolean b);
+
+	List<User> findAllWhoIAmFollowingByFollowers_Username(String username);
 	
 }

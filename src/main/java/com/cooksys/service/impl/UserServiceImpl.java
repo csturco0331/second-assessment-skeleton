@@ -41,9 +41,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<TweetProjection> getFeed(String username) throws Exception {
 		List<TweetProjection> tweets = getTweets(username);
-		List<User> whoIAmFollowing = userRepo.findAllWhoIAmFollowingByFollowers_UsernameAndDeletedFlag(username, false);
+		List<User> whoIAmFollowing = userRepo.findAllWhoIAmFollowingByFollowers_Username(username);
 		for(User user : whoIAmFollowing) {
-			tweets.addAll(getTweets(user.getUsername()));
+			tweets.addAll(tweetsRepo.findTweetsByAuthor_UsernameAndDeletedFlagOrderByPostedDesc(user.getUsername(), false));
 		}
 		tweets.sort(TweetProjection.sortByPosted());
 		return tweets;
@@ -53,13 +53,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<TweetProjection> getTweets(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return tweetsRepo.findTweetsByAuthor_UsernameAndDeletedFlagOrderByPostedAsc(username, false);
+		return tweetsRepo.findTweetsByAuthor_UsernameAndDeletedFlagOrderByPostedDesc(username, false);
 	}
 
 	@Override
 	public List<TweetProjection> getMentions(String username) throws Exception {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
-		return tweetsRepo.findMentionedByMentions_UsernameAndDeletedFlagOrderByPostedAsc(username, false);
+		return tweetsRepo.findMentionedByMentions_UsernameAndDeletedFlagOrderByPostedDesc(username, false);
 	}
 
 	@Override
@@ -87,6 +87,8 @@ public class UserServiceImpl implements UserService {
 			return userRepo.findByUsername(temp.getUsername());
 		} if(search.getDeletedFlag() && search.getCredentials().getPassword().equals(user.getCredentials().getPassword())) {
 			search.setDeletedFlag(false);
+			user.getProfile().setId(search.getProfile().getId());
+			search.setProfile(user.getProfile());
 			User temp = userRepo.saveAndFlush(search);
 			return userRepo.findByUsername(temp.getUsername());
 		}
