@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.cooksys.entity.Context;
 import com.cooksys.entity.Credentials;
-import com.cooksys.entity.TweetPost;
+import com.cooksys.entity.Tweet;
 import com.cooksys.projections.HashtagProjection;
 import com.cooksys.projections.TweetProjection;
 import com.cooksys.projections.UserProjection;
@@ -27,14 +27,16 @@ public interface TweetsService {
 
 	List<UserProjection> getMentions(Long id) throws Exception;
 
-	TweetProjection postTweet(TweetPost post) throws Exception;
+	TweetProjection postTweet(Tweet post) throws Exception;
 
-	TweetProjection postReply(Long id, TweetPost post) throws Exception;
+	TweetProjection postReply(Long id, Tweet post) throws Exception;
 
 	TweetProjection postRepost(Long id, Credentials credentials) throws Exception;
 
 	TweetProjection deleteTweet(Long id, Credentials credentials) throws Exception;
 
 	void postLike(Long id, Credentials credentials) throws Exception;
+
+	void postUnlike(Long id, Credentials credentials) throws Exception;
 
 }

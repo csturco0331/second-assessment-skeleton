@@ -13,7 +13,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
 	List<HashtagProjection> findAllProjectedBy();
 	
-	List<HashtagProjection> findHashtagsByHashtagTweets_IdAndHashtagTweets_DeletedFlag(Long id, boolean b);
+	List<HashtagProjection> findHashtagsByHashtagTweets_IdAndHashtagTweets_DeletedFlagFalse(Long id);
 
 	Hashtag findFirstByLabelIgnoreCase(String label);
 	

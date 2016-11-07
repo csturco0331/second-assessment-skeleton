@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +28,7 @@ public class Tweet {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(nullable = false)
 	private User author;
 	
 	@Column(nullable = false, updatable = false)
@@ -70,7 +71,11 @@ public class Tweet {
 	@JsonIgnore
 	private List<User> likes = new LinkedList<>();
 	
+	@Column(nullable = false)
 	private Boolean deletedFlag = false;
+	
+	@Transient
+	private Credentials credentials;
 	
 	public Tweet() {
 		
@@ -184,6 +189,14 @@ public class Tweet {
 
 	public void setDeletedFlag(Boolean deletedFlag) {
 		this.deletedFlag = deletedFlag;
+	}
+
+	public Credentials getCredentials() {
+		return credentials;
+	}
+
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
 	}
 
 }
