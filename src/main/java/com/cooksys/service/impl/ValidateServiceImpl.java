@@ -1,5 +1,6 @@
 package com.cooksys.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.repository.HashtagRepository;
@@ -8,14 +9,10 @@ import com.cooksys.service.ValidateService;
 
 @Service
 public class ValidateServiceImpl implements ValidateService {
-
+	@Autowired
 	HashtagRepository hashtagRepo;
+	@Autowired
 	UserRepository userRepo;
-	
-	public ValidateServiceImpl(HashtagRepository hashtagRepo, UserRepository userRepo) {
-		this.hashtagRepo = hashtagRepo;
-		this.userRepo = userRepo;
-	}
 	
 	@Override
 	public Boolean hashtagExists(String label) {

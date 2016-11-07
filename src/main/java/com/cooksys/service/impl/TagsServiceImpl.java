@@ -2,6 +2,7 @@ package com.cooksys.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.projections.HashtagProjection;
@@ -13,13 +14,10 @@ import com.cooksys.service.TagsService;
 @Service
 public class TagsServiceImpl implements TagsService {
 
+	@Autowired
 	private HashtagRepository hashtagRepo;
+	@Autowired
 	private TweetsRepository tweetsRepo;
-	
-	public TagsServiceImpl(HashtagRepository hashtagRepo, TweetsRepository tweetsRepo) {
-		this.hashtagRepo = hashtagRepo;
-		this.tweetsRepo = tweetsRepo;
-	}
 	
 	@Override
 	public List<HashtagProjection> getHashtags() {

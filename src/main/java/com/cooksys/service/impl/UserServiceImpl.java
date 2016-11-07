@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.entity.Credentials;
@@ -18,13 +19,10 @@ import com.cooksys.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
 	UserRepository userRepo;
+	@Autowired
 	TweetsRepository tweetsRepo;
-	
-	public UserServiceImpl(UserRepository userRepo, TweetsRepository tweetsRepo) {
-		this.userRepo = userRepo;
-		this.tweetsRepo = tweetsRepo;
-	}
 	
 	@Override
 	public List<UserProjection> getUsers() {

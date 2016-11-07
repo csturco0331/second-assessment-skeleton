@@ -2,6 +2,7 @@ package com.cooksys.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +29,8 @@ import com.cooksys.service.TweetsService;
 @RequestMapping("tweets")
 public class TweetsController {
 
+	@Autowired
 	private TweetsService tweetsService;
-
-	public TweetsController(TweetsService tweetsService) {
-		this.tweetsService = tweetsService;
-	}
 	
 	/**
 	 * Retrieves all (non-deleted) {@link TweetProjection}s. The tweets should appear in reverse-chronological order.

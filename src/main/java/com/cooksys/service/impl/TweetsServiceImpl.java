@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.entity.Context;
@@ -28,15 +29,12 @@ import com.cooksys.service.TweetsService;
 @Service
 public class TweetsServiceImpl implements TweetsService {
 
+	@Autowired
 	TweetsRepository tweetsRepo;
+	@Autowired
 	HashtagRepository hashtagRepo;
+	@Autowired
 	UserRepository userRepo;
-
-	public TweetsServiceImpl(TweetsRepository tweetsRepo, HashtagRepository hashtagRepo, UserRepository userRepo) {
-		this.tweetsRepo = tweetsRepo;
-		this.hashtagRepo = hashtagRepo;
-		this.userRepo = userRepo;
-	}
 
 	@Override
 	public List<TweetProjection> getTweets() {

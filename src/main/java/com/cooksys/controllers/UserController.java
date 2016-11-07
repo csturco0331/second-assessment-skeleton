@@ -2,6 +2,7 @@ package com.cooksys.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.Profile;
 import com.cooksys.entity.User;
 import com.cooksys.projections.TweetProjection;
 import com.cooksys.projections.UserProjection;
@@ -26,11 +28,8 @@ import com.cooksys.service.UserService;
 @RequestMapping("users")
 public class UserController {
 	
+	@Autowired
 	private UserService userService;
-	
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
 	
 	/**
 	 * Retrieves all active (non-deleted) {@link UserProjection}s as a {@link List}.
