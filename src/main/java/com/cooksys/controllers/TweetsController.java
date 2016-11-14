@@ -3,6 +3,7 @@ package com.cooksys.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.cooksys.service.TweetsService;
  * end user that deal with {@link Tweet}s inside of the linked DataBase
  * @author Cory Scott Turco
  */
+@CrossOrigin
 @RestController
 @RequestMapping("tweets")
 public class TweetsController {
