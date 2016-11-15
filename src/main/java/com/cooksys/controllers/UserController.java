@@ -54,6 +54,11 @@ public class UserController {
 		return userService.getUser(username);
 	}
 	
+	@GetMapping("/@{username}/@{password}")
+	public UserProjection getValidatedUser(@PathVariable String username, @PathVariable String password) throws Exception {
+		return userService.getValidatedUser(username, password);
+	}
+	
 	/**
 	 * Retrieves all (non-deleted) {@link TweetProjection}s authored by the {@link User} with the given username, 
 	 * as well as all (non-deleted) tweets authored by users the given user is following. 

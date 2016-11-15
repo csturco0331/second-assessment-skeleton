@@ -13,6 +13,8 @@ public interface UserService {
 
 	UserProjection getUser(String username) throws Exception;
 
+	UserProjection getValidatedUser(String username, String password) throws Exception;
+
 	List<TweetProjection> getFeed(String username) throws Exception;
 
 	List<TweetProjection> getTweets(String username) throws Exception;
