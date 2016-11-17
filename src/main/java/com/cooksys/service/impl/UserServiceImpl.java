@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
 		if (user == null) throw new Exception("Username not found");
 		return user;
 	}
+	
+	@Override
+	public List<UserProjection> getPartialUsers(String username) throws Exception {
+		return userRepo.findByDeletedFlagFalseAndUsernameContaining(username);
+	}
 
 	@Override
 	public List<TweetProjection> getFeed(String username) throws Exception {

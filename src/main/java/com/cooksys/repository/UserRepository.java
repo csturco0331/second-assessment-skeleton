@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	UserProjection findByUsernameAndDeletedFlagFalseAndCredentials_Password(String username, String password);
 	
+	List<UserProjection> findByDeletedFlagFalseAndUsernameContaining(String username);
+	
 	List<UserProjection> findLikesByLiked_IdAndDeletedFlagFalse(Long id);
 
 	List<UserProjection> findMentionsByMentioned_IdAndDeletedFlagFalse(Long id);

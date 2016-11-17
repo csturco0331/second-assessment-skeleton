@@ -14,6 +14,8 @@ public interface UserService {
 	UserProjection getUser(String username) throws Exception;
 
 	UserProjection getValidatedUser(String username, String password) throws Exception;
+	
+	List<UserProjection> getPartialUsers(String username) throws Exception;
 
 	List<TweetProjection> getFeed(String username) throws Exception;
 

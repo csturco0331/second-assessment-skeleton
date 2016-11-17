@@ -16,5 +16,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 	List<HashtagProjection> findHashtagsByHashtagTweets_IdAndHashtagTweets_DeletedFlagFalse(Long id);
 
 	Hashtag findFirstByLabelIgnoreCase(String label);
+
+	List<HashtagProjection> findByLabelIgnoreCaseContaining(String label);
 	
 }

@@ -36,6 +36,16 @@ public class TagsController {
 		return tagsService.getHashtags();
 	}
 	
+	@GetMapping("/partial/{label}")
+	public List<TweetProjection> getPartialLabel(@PathVariable String label) throws Exception {
+		return tagsService.getPartialLabel(label);
+	}
+	
+	@GetMapping("/partialtag/{label}")
+	public List<HashtagProjection> getPartialHashtags(@PathVariable String label) throws Exception {
+		return tagsService.getPartialHashtags(label);
+	}
+	
 	/**
 	 * Retrieves all (non-deleted) {@link TweetProjection}s tagged with the given {@link Hashtag} label. The tweets 
 	 * should appear in reverse-chronological order. If no hashtag with the given label exists, an error should be 

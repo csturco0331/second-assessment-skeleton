@@ -23,9 +23,25 @@ public class TagsServiceImpl implements TagsService {
 	public List<HashtagProjection> getHashtags() {
 		return hashtagRepo.findAllProjectedBy();
 	}
+	
+	@Override
+	public List<HashtagProjection> getPartialHashtags(String label) throws Exception {
+		label = label.toLowerCase();
+		List<HashtagProjection> results = hashtagRepo.findByLabelIgnoreCaseContaining(label);
+		if (results.isEmpty()) throw new Exception("No Hashtag found");
+		return results;
+	}
+	
+	@Override
+	public List<TweetProjection> getPartialLabel(String label) throws Exception {
+		label = label.toLowerCase();
+		if(hashtagRepo.findByLabelIgnoreCaseContaining(label).isEmpty()) throw new Exception("No Hashtag found");
+		return tweetsRepo.findTweetsByHashtags_LabelContainingAndDeletedFlagFalseOrderByPostedDesc(label);
+	}
 
 	@Override
 	public List<TweetProjection> getLabel(String label) throws Exception {
+		label = label.toLowerCase();
 		if(hashtagRepo.findByLabelIgnoreCase(label) == null) throw new Exception("No Hashtag found");
 		return tweetsRepo.findTweetsByHashtags_LabelAndDeletedFlagFalseOrderByPostedDesc(label);
 	}
