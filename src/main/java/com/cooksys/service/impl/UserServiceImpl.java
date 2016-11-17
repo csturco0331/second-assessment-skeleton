@@ -2,6 +2,8 @@ package com.cooksys.service.impl;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -87,6 +89,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserProjection postUser(User user) throws Exception {
+		Matcher m = Pattern.compile("(\\w+)").matcher(user.getCredentials().getUsername());
+		String validate = "";
+		while(m.find()) {
+			validate = m.group();
+		}
+		if (!validate.equals(user.getCredentials().getUsername())) throw new Exception("This is an invalid username, only use AlphaNumeric values");
 		if(user.getCredentials().getUsername() == null || user.getCredentials().getPassword() == null || user.getProfile().getEmail() == null)
 			throw new Exception("Required field was null");
 		user.setUsername(user.getCredentials().getUsername());
