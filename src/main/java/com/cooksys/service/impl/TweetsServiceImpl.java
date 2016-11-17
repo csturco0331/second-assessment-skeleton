@@ -134,7 +134,9 @@ public class TweetsServiceImpl implements TweetsService {
 		Matcher m = Pattern.compile("(\\s|\\A)@(\\w+)").matcher(content);
 		while (m.find()) {
 			String username = m.group();
-			users.add(userRepo.findFirstByUsernameAndDeletedFlagFalse(username.substring(2)));
+			username = username.replaceAll("\\s", "");
+			System.out.println(username);
+			users.add(userRepo.findFirstByUsernameAndDeletedFlagFalse(username.substring(1)));
 		}
 		users.removeAll(Collections.singleton(null));
 		return users;
