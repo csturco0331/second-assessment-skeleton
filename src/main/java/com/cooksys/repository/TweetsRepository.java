@@ -20,6 +20,8 @@ public interface TweetsRepository extends JpaRepository<Tweet, Long> {
 	List<TweetProjection> findTweetsByHashtags_LabelAndDeletedFlagFalseOrderByPostedDesc(String label);
 
 	List<TweetProjection> findMentionedByMentions_UsernameAndDeletedFlagFalseOrderByPostedDesc(String username);
+	
+	List<TweetProjection> findMentionedByMentions_UsernameContainingAndDeletedFlagFalseOrderByPostedDesc(String username);
 
 	List<TweetProjection> findByDeletedFlagFalseOrderByPostedDesc();
 

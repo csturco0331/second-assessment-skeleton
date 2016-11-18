@@ -107,6 +107,11 @@ public class UserController {
 		return userService.getMentions(username);
 	}
 	
+	@GetMapping("/partial/@{username}/mentions")
+	public List<TweetProjection> getPartialMentions(@PathVariable String username) throws Exception {
+		return userService.getPartialMentions(username);
+	}
+	
 	/**
 	 * Retrieves the followers of the {@link User} with the given username. Only active users should be 
 	 * included in the response. If no active user with the given username exists, an error should be 

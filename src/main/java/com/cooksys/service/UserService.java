@@ -22,6 +22,8 @@ public interface UserService {
 	List<TweetProjection> getTweets(String username) throws Exception;
 
 	List<TweetProjection> getMentions(String username) throws Exception;
+	
+	List<TweetProjection> getPartialMentions(String username) throws Exception;
 
 	List<UserProjection> getFollowers(String username) throws Exception;
 

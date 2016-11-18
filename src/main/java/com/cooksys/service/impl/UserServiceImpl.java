@@ -73,6 +73,12 @@ public class UserServiceImpl implements UserService {
 		if(userRepo.findByUsernameAndDeletedFlag(username, false) == null) throw new Exception("Username not found");
 		return tweetsRepo.findMentionedByMentions_UsernameAndDeletedFlagFalseOrderByPostedDesc(username);
 	}
+	
+	@Override
+	public List<TweetProjection> getPartialMentions(String username) throws Exception {
+		return tweetsRepo.findMentionedByMentions_UsernameContainingAndDeletedFlagFalseOrderByPostedDesc(username);
+
+	}
 
 	@Override
 	public List<UserProjection> getFollowers(String username) throws Exception {
@@ -174,4 +180,5 @@ public class UserServiceImpl implements UserService {
 		User temp = userRepo.saveAndFlush(user);
 		return userRepo.findByUsernameAndDeletedFlag(temp.getUsername(), true);
 	}
+
 }
