@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<TweetProjection> getPartialMentions(String username) throws Exception {
-		return tweetsRepo.findMentionedByMentions_UsernameContainingAndDeletedFlagFalseOrderByPostedDesc(username);
+		return tweetsRepo.findDistinctMentionedByMentions_UsernameContainingAndDeletedFlagFalseOrderByPostedDesc(username);
 
 	}
 

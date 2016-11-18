@@ -36,14 +36,14 @@ public class TagsServiceImpl implements TagsService {
 	public List<TweetProjection> getPartialLabel(String label) throws Exception {
 		label = label.toLowerCase();
 		if(hashtagRepo.findByLabelIgnoreCaseContaining(label).isEmpty()) throw new Exception("No Hashtag found");
-		return tweetsRepo.findTweetsByHashtags_LabelContainingAndDeletedFlagFalseOrderByPostedDesc(label);
+		return tweetsRepo.findDistinctTweetsByHashtags_LabelContainingAndDeletedFlagFalseOrderByPostedDesc(label);
 	}
 
 	@Override
 	public List<TweetProjection> getLabel(String label) throws Exception {
 		label = label.toLowerCase();
 		if(hashtagRepo.findByLabelIgnoreCase(label) == null) throw new Exception("No Hashtag found");
-		return tweetsRepo.findTweetsByHashtags_LabelAndDeletedFlagFalseOrderByPostedDesc(label);
+		return tweetsRepo.findDistinctTweetsByHashtags_LabelAndDeletedFlagFalseOrderByPostedDesc(label);
 	}
 
 }
