@@ -36,7 +36,7 @@ public class TagsController {
 		return tagsService.getHashtags();
 	}
 	
-	@GetMapping("/partial/{label}")
+	@GetMapping("/{label}/partial")
 	public List<TweetProjection> getPartialLabel(@PathVariable String label) throws Exception {
 		return tagsService.getPartialLabel(label);
 	}
