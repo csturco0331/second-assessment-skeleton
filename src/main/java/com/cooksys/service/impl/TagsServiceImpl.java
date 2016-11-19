@@ -44,7 +44,7 @@ public class TagsServiceImpl implements TagsService {
 		label = label.toLowerCase();
 		System.out.println(label);
 		if(hashtagRepo.findByLabelIgnoringCase(label) == null) throw new Exception("No Hashtag found");
-		return tweetsRepo.findDistinctTweetsByHashtags_LabelAndDeletedFlagFalseOrderByPostedDesc(label);
+		return tweetsRepo.findDistinctTweetsByHashtags_LabelIgnoreCaseAndDeletedFlagFalseOrderByPostedDesc(label);
 	}
 
 }
