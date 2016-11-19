@@ -59,7 +59,7 @@ public class UserController {
 		return userService.getValidatedUser(username, password);
 	}
 	
-	@GetMapping("/partial/@{username}")
+	@GetMapping("/@{username}/partial")
 	public List<UserProjection> getPartialUsers(@PathVariable String username) throws Exception {
 		return userService.getPartialUsers(username);
 	}
@@ -107,7 +107,7 @@ public class UserController {
 		return userService.getMentions(username);
 	}
 	
-	@GetMapping("/partial/@{username}/mentions")
+	@GetMapping("/@{username}/mentions/partial")
 	public List<TweetProjection> getPartialMentions(@PathVariable String username) throws Exception {
 		return userService.getPartialMentions(username);
 	}
