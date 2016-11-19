@@ -9,7 +9,7 @@ import com.cooksys.projections.HashtagProjection;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
-	HashtagProjection findByLabelIgnoreCase(String label);
+	HashtagProjection findByLabelIgnoringCase(String label);
 
 	List<HashtagProjection> findAllProjectedBy();
 	

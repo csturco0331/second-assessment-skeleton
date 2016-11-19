@@ -134,9 +134,9 @@ public class TweetsServiceImpl implements TweetsService {
 		Matcher m = Pattern.compile("(\\s|\\A)@(\\w+)").matcher(content);
 		while (m.find()) {
 			String username = m.group();
-			username = username.replaceAll("\\s", "");
+			username = username.replaceAll("\\s", "").substring(1);
 			System.out.println(username);
-			users.add(userRepo.findFirstByUsernameAndDeletedFlagFalse(username.substring(1)));
+			users.add(userRepo.findFirstByUsernameAndDeletedFlagFalse(username));
 		}
 		users.removeAll(Collections.singleton(null));
 		return users;
@@ -148,7 +148,9 @@ public class TweetsServiceImpl implements TweetsService {
 		List<Hashtag> hashtags = new ArrayList<>();
 		Matcher m = Pattern.compile("(\\s|\\A)#(\\w+)").matcher(content);
 		while (m.find()) {
-			String label = m.group().substring(2);
+			String label = m.group();
+			label = label.replaceAll("\\s", "").substring(1);
+			System.out.println(label);
 			Hashtag hashtag = hashtagRepo.findFirstByLabelIgnoreCase(label);
 			if (hashtag == null)
 				hashtag = new Hashtag(label, creation);
